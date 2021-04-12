@@ -1,5 +1,10 @@
+cmake_minimum_required(VERSION 3.13)
+
 project(StaticMetaSingleton LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
+
+# Uncomment this line to use an explicit tag for the SharedMutex used.
+#add_compile_definitions(EXPLICIT_TAG)
 
 find_package(folly)
 
