@@ -1,11 +1,26 @@
-#include <folly/ThreadLocal.h>
+#include <folly/SharedMutex.h>
+#include <shared_mutex>
+#include <thread>
 
-FOLLY_EXPORT void setThreadLocalViaShared(folly::ThreadLocal<int>&);
+FOLLY_EXPORT void lockViaSharedLibrary(MUTEX&);
 
 int main() {
-    // Define one thread-local from the main module.
-    folly::ThreadLocal<int> localInt1;
+    MUTEX mutex;
 
-    // Also set the same thread-local `localInt` via a dll.
-    setThreadLocalViaShared(localInt1);
+    // Create two additional threads which repeatedly locks / unlocks
+    // via a shared library.
+    std::thread shared1{[&mutex](){
+            lockViaSharedLibrary(mutex);
+        }};
+    std::thread shared2{[&mutex](){
+            lockViaSharedLibrary(mutex);
+        }};
+
+    while (true) {
+        mutex.lock();
+        mutex.unlock();
+    };
+
+    shared1.join();
+    shared2.join();
 }
