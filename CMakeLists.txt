@@ -3,11 +3,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(folly)
 
-# Test hangs (deadlocks) with MUTX=folly::SharedMutex in <10s.
-# With std::shared_mutex runs fine for at least 5 minutes.
-add_compile_definitions(MUTEX=folly::SharedMutex)
-#add_compile_definitions(MUTEX=std::shared_mutex)
-
 add_executable(main main.cc)
 target_link_libraries(main shared Folly::folly)
 

@@ -1,11 +1,11 @@
-#include <folly/SharedMutex.h>
-#include <shared_mutex>
+#include "config.h"
+
 #include <thread>
 
-FOLLY_EXPORT void lockViaSharedLibrary(MUTEX&);
+FOLLY_EXPORT void lockViaSharedLibrary(Mutex&);
 
 int main() {
-    MUTEX mutex;
+    Mutex mutex;
 
     // Create two additional threads which repeatedly locks / unlocks
     // via a shared library.
